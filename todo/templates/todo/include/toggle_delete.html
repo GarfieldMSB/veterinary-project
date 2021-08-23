@@ -1,0 +1,12 @@
+
+  {% if list_slug != "mine" %}
+    {% if view_completed %}
+      <a href="{% url 'todo:list_detail' list_id list_slug %}" class="btn btn-sm btn-warning">Ver tareas incompletas</a>
+
+    {% else %}
+      <a href="{% url 'todo:list_detail_completed' list_id list_slug %}" class="btn btn-sm btn-warning">Ver tareas completas</a>
+
+    {% endif %}
+
+    <a href="{% url 'todo:del_list' list_id list_slug %}" class="btn btn-sm btn-danger">Borrar esta lista</a>
+  {% endif %}

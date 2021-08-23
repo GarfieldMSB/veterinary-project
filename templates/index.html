@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block titulo %}HOME{% endblock %}
+
+{% block home-activo %}active{% endblock %}
+{% load static %}
+{% block body %}
+<!-- cartas de reporte -->
+<div class="row">
+
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2 card-noborder card-pad">
+      <div class="card-body card-index">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1 card-index-txt">Total de Inventario</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800 card-index-num">{{ productos }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-boxes fa-2x text-info fa-index"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- fa-clipboard-list -->
+
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2 card-noborder card-pad">
+      <div class="card-body card-index">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1 card-index-txt">Total de Usuarios
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800 card-index-num">{{ usuarios }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-users fa-2x text-success fa-index"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Pending Requests Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2 card-noborder card-pad">
+      <div class="card-body card-index">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1 card-index-txt">Mascotas registradas
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800 card-index-num">{{ mascotas }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-paw fa-2x text-warning fa-index"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-danger shadow h-100 py-2 card-noborder card-pad">
+        <div class="card-body card-index">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1 card-index-txt">Eventos pendientes
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800 card-index-num">{{ num_tasks_act }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-tasks fa-2x text-danger fa-index"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
+    {% if num_tasks_act != 0 %}
+    <div class="col-md-8">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Citas pendientes</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <!-- <th>Código</th> -->
+                  <th>Título </th>
+                  <th>Lista</th>
+                  <th>Fecha</th>
+                  <th>Asignado</th>
+  
+  
+                </tr>
+              </thead>
+              <tbody>
+                  {% load i18n %}
+  
+                {% for item in tasks_act %}
+                <tr>
+                  <!-- <td>{{ item.pk }}</td> -->
+                  <td>
+                    <a href="{% url 'todo:task_detail' item.id %}">
+                    {{ item.title }}</a></td>
+                    <td>{{ item.task_list }}</td>
+
+                  <td>{% language 'es' %}
+                      {{ item.due_date|date:"d M" }} {{ item.due_date|time:"h:i a" }}
+                      {% endlanguage %}</td>
+                  <td>{{ item.assigned_to|default_if_none:"Yo" }}</td>
+  
+  
+                </tr>
+  
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {% if num_agotados != 0 or num_criticos != 0 %}
+  <div class="col-md-4">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Productos necesitados de repocisión</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" {%if num_total >= 4%} style="height:315px;" {%endif%}>
+          <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <!-- <th>Código</th> -->
+                <th>Nombre</th>
+                <!-- <th>Marca</th>
+                <th>Precio</th> -->
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items_agotados %}
+              <tr>
+                <!-- <td>{{ item.pk }}</td> -->
+                <td>
+                  <a href="{% url 'inventario:editar_prod' item.pk %}">{{ item.prod_nomb }}</a>
+                </td>
+                <!-- <td>{{ item.marca_nomb|default_if_none:"Generico" }}</td>
+                <td>
+                    S./ {{ item.precio }}
+                </td> -->
+                <td>
+                    {% if item.estado == 'AGOTADO' %}
+                    <div class="btn-configuracion"><a class="d-sm-inline-block btn btn-sm btn-danger shadow-sm"
+                        style="color: var(--Bl);">Agotado</a></div>
+                    {% else%}
+                    <div class="btn-configuracion"><a class="d-sm-inline-block btn btn-sm btn-warning shadow-sm"
+                        style="color: var(--Bl);">Bajo stock</a></div>
+                    {% endif %}
+                </td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endif %}
+</div>
+{% endblock %}
+{% block picfooter %}
+
+<img class="img-fluid px-0 pl-sm-3 mt-3 float-right" style="width: 40rem;" src="{% static 'img/clinica.svg' %}" alt="">
+
+{% endblock %}

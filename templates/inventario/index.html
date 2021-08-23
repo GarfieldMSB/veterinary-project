@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Inventario{% endblock %}
+
+{% block inventario-activo %}active{% endblock %}
+
+{% block body %}
+{{ item.marca_nomb|default_if_none:"&nbsp;" }}
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Inventario de productos</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <!-- <th>Código</th> -->
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Marca</th>
+            <th>Tipo mascota</th>
+            <th>Estado</th>
+            <th>Precio</th>
+            <th>Configuración</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items_prod %}
+          <tr>
+            <!-- <td>{{ item.pk }}</td> -->
+            <td>{{ item.prod_nomb }}</td>
+            <td>{{ item.cat_prod }}</td>
+            <td>{{ item.marca_nomb|default_if_none:"Generico" }}</td>
+            <td>{{ item.tip_mascota }}</td>
+            <td>
+              {% if item.estado == 'AGOTADO' %}
+              <div class="btn-configuracion"><a class="d-sm-inline-block btn btn-sm btn-danger shadow-sm"
+                  style="color: var(--Bl);">Agotado</a></div>
+              {% elif item.estado == 'DISPONIBLE' %}
+              <div class="btn-configuracion"><a class="d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                  style="color: var(--Bl);">Disponible</a></div>
+              {% else%}
+              <div class="btn-configuracion"><a class="d-sm-inline-block btn btn-sm btn-warning shadow-sm"
+                  style="color: var(--Bl);">Bajo stock</a></div>
+              {% endif %}
+
+            </td>
+            <td>$ {{ item.precio }}</td>
+
+            <td>
+              <div class="row">
+                <div class="btn-configuracion col-6"><a href="{% url 'inventario:editar_prod' item.pk %}"
+                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></div>
+                <div class="btn-configuracion col-6"><a href="#" data-toggle="modal" data-target="#eliminar_prod"
+                    class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">Eliminar</a></div>
+              </div>
+            </td>
+
+          </tr>
+          <div class="modal fade" id="eliminar_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">¿Seguro que deseas eliminar?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">Selecciona "Eliminar" para eliminar permanentemente el producto:
+                  {{ item.prod_nomb }}.</div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                  <a class="btn btn-danger" href="{% url 'inventario:eliminar_prod' item.pk %}">Eliminar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

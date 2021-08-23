@@ -1,0 +1,33 @@
+{% extends "todo/todo_base.html" %}
+{% block title %}Delete list{% endblock %}
+
+{% block todo %}
+  {% if user.is_staff %}
+  <h1>Borrar lista entera</h1>: ¿{{ task_list.name }} ?</h1>
+
+  <p>Registro de tareas:</p>
+
+  <ul>
+    <li>Incompleto: {{ task_count_undone }} </li>
+    <li>Completo: {{ task_count_done }} </li>
+    <li>
+      <strong>Total: {{ task_count_total }}</strong>
+    </li>
+  </ul>
+
+ <!--  <p> ... todo lo cual será irremediablemente
+    <strong>blown away</strong>. Are you sure you want to do that?</p> -->
+    <p> ... todo lo cual será irremediablemente. ¿Estás seguro de que quieres hacer eso?</p>
+  <form action="" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    <input type="hidden" name="task_list" value="{{ task_list.id }}">
+    <p>
+      <a href="{% url 'todo:list_detail' task_list.id task_list.slug %}" class="btn btn-success">Regresar a la lista: {{ task_list.name }}</a>
+      <input type="submit" name="delete-confirm" value="Hacer esto! &rarr;" class="btn btn-danger">
+    </p>
+  </form>
+
+
+{% else %}
+  <p>Lo sentimos, no tienes permiso para eliminar listas. Póngase en contacto con el administrador de su grupo.</p>
+{% endif %} {% endblock %}

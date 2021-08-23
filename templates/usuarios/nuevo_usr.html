@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}Nuevo Usuario{% endblock %}
+
+{% block registrar-activo %}active{% endblock %}
+
+{% block body %}
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">{{ tipo_titulo }}</h1>
+                    </div>
+                    <form class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">{{ form.nomb_usr|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.ap_usr|as_crispy_field }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">{{ form.tel_usr|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ form.cel_usr|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ form.dir_usr|as_crispy_field }}</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block">{{ tipo_boton }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

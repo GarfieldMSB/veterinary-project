@@ -1,0 +1,30 @@
+{% extends "todo/todo_base.html" %}
+
+{% block title %}Search results{% endblock %}
+{% block content_title %}<h2 class="page_title">Buscar</h2>{% endblock %}
+
+{% block todo %}
+  {% if found_tasks %}
+  <h2>{{found_tasks.count}} buscar resultados por terminos: "{{ query_string }}"</h2>
+  <div class="post_list">
+    {% for f in found_tasks %}
+    <p>
+      <strong>
+        <a href="{% url 'todo:task_detail' f.id %}">{{ f.title }}</a>
+      </strong>
+      <br />
+      <span class="minor">
+        En lista:
+        <a href="{% url 'todo:list_detail' f.task_list.id f.task_list.slug %}">
+          {{ f.task_list.name }}
+        </a>
+        <br /> Asignado a: {% if f.assigned_to %}{{ f.assigned_to }}{% else %}Todos{% endif %}
+        <br /> Completo: {{ f.completed|yesno:"Yes,No" }}
+      </span>
+    </p>
+    {% endfor %}
+  </div>
+  {% else %}
+    <h2> No hya resultados para mostrar.Lo siento.</h2>
+  {% endif %}
+{% endblock %}

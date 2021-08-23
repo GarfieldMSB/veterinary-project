@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo %}Usuarios{% endblock %}
+
+{% block usuario-activo %}active{% endblock %}
+{% block adicional-header %}{{ item.nomb_usr }}{% endblock %}
+{% block body %}
+<div class="row">
+<div class="col-lg-5">
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ item.nomb_usr }} {{ item.ap_usr }}</h6>
+    </div>
+    <div class="card-body">
+        <a class="font-weight-bold">Nombre completo:</a> {{ item.nomb_usr }} {{ item.ap_usr }} <br>
+        <a class="font-weight-bold">Celular de contacto:</a> {{ item.cel_usr }}<br>
+        {% if item.tel_usr == None %}
+        <a class="font-weight-bold">Número de telefono: </a>No proveido<br>
+        {% else %}
+        <a class="font-weight-bold">Número de telefono: </a>{{ item.tel_usr }}<br>
+        {% endif %}
+        <a class="font-weight-bold">Número de Mascotas registradas: </a>{{ num_mascotas }}<br>
+        <a class="font-weight-bold">Dirección: </a>{{ item.dir_usr }}<br>
+        
+            <div class="row">
+                <div class="col-4">
+                        <a href="https://wa.me/51{{ item.cel_usr }}" class="btn btn-success btn-icon-split btn-sm mt-3">
+                                <span class="icon text-white-50">
+                                  <i class="fab fa-whatsapp icon-wsp"></i>
+                                </span>
+                                <span class="text">Contactar</span>
+                              </a>
+                </div>
+                <div class="col-4 btn-configuracion">
+                    <a href="{% url 'usuarios:editar_usr' item.id %}" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm mt-3">Editar valores</a>
+                </div>
+                <div class="col-4">
+                    <a href="#" data-toggle="modal" data-target="#eliminar_usr" class=" d-sm-inline-block btn btn-sm btn-danger shadow-sm mt-3">Eliminar Usuario</a>
+                </div>
+                
+            </div>
+        
+
+    </div>
+</div>
+</div>
+<div class="col-lg-7 mb-4">
+<div class="card o-hidden border-0 shadow-lg">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-4">
+                    <form class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">{{ form.nomb_mascota|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.tip_mascota|as_crispy_field }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">{{ form.genero_mascota|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ form.raza_mascota|as_crispy_field }}</div>
+                            <div class="col-md-4 div-btn-masc-perfil"><button type="submit" class="btn btn-primary btn-user btn-block btn-masc-perfil">Registrar Mascota</button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Mascotas registradas</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Género</th>
+                        <th>Raza</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items_mascota %}
+                    <tr>
+                        <td><a href="{% url 'mascotas:perfil_mascota' item.id %}">{{ item.nomb_mascota }}</a></td>
+                        <td>{{ item.tip_mascota }}</td>
+                        <td>{{ item.genero_mascota }}</td>
+                        <td>{{ item.raza_mascota|default_if_none:"---" }}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="eliminar_usr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">¿Seguro que deseas eliminar?</h5>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">Selecciona "Eliminar" para eliminar permanentemente el usuario: {{ item.nomb_usr }} {{ item.ap_usr }}.</div>
+                        <div class="modal-footer">
+                          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                          <a class="btn btn-danger" href="{% url 'usuarios:eliminar_usr' item.pk %}">Eliminar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+{% endblock %}

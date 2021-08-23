@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}Inventario{% endblock %}
+
+{% block registrar-activo %}active{% endblock %}
+
+{% block body %}
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">{{ tipo_titulo }}</h1>
+                    </div>
+                    <form class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8">{{ formproducto.prod_nomb|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ formproducto.precio|as_crispy_field }}</div>
+                        </div>
+                        {{ formproducto.estado|as_crispy_field }}
+                        <div class="row">
+                            <div class="col-md-3 col-sm-10 col-xs-8">{{ formproducto.cat_prod|as_crispy_field }}</div>
+                            <!-- <div class="col-2 icon"><a href="% url 'inventario:nuevo_cat' %"><i class="fas fa-fw fa-plus-circle kek"></i></a></div> -->
+                            <div class="col-md-1 col-sm-2 icon col-xs-2"><a href="#" data-toggle="modal" data-target="#nuevaCat"><i class="fas fa-fw fa-plus-circle kek"></i></a></div>
+                        
+                            <div class="col-md-3 col-sm-10 col-xs-8">{{ formproducto.marca_nomb|as_crispy_field }}</div>
+                            <!-- <div class="col-2 icon"><a href="% url 'inventario:nuevo_marc' %"><i class="fas fa-fw fa-plus-circle"></i></a></div> -->
+                            <div class="col-md-1 col-sm-2 icon col-xs-2"><a href="#" data-toggle="modal" data-target="#nuevaMarc"><i class="fas fa-fw fa-plus-circle"></i></a></div>
+                        
+                            <div class="col-md-3 col-sm-10 col-xs-8">{{ formproducto.tip_mascota|as_crispy_field }}</div>
+                            <!-- <div class="col-2 icon"><a href="% url 'inventario:nuevo_tipmascota' %"><i class="fas fa-fw fa-plus-circle"></i></a></div> -->
+                            <div class="col-md-1 col-sm-2 icon col-xs-2"><a href="#" data-toggle="modal" data-target="#nuevaMasc"><i class="fas fa-fw fa-plus-circle"></i></a></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-user btn-block">{{ tipo_boton }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nuevaMarc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Nueva Marca</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <form class="user" method="POST">
+        {% csrf_token %}
+        <div class="m-3">
+        {{ formmarc|crispy }}</div>
+        <div class="row mb-2">
+        <button type="submit" class="btn btn-primary btn-user col-md-4" style="margin: auto;">Guardar!!</button>
+    </form>
+  </div>
+</div>
+</div>
+
+</div>
+<div class="modal fade" id="nuevaMasc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo Tipo de Mascota</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form class="user" method="POST">
+          {% csrf_token %}
+          <div class="m-3">
+          {{ formmasc|crispy }}</div>
+          <div class="row mb-2">
+          <button type="submit" class="btn btn-primary btn-user col-md-4" style="margin: auto;">Guardar!!</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="modal fade" id="nuevaCat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nueva categoría</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form class="user" method="POST">
+            {% csrf_token %}
+            <div class="m-3">
+            {{ formcat|crispy }}</div>
+            <div class="row mb-2">
+            <button type="submit" class="btn btn-primary btn-user col-md-4" style="margin: auto;">Guardar!!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

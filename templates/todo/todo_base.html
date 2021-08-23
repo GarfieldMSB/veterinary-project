@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extrahead%}
+
+<script src="{% static 'tempus/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'tempus/moment.min.js' %}"></script>
+<script src="{% static 'tempus/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+<script src="{% static 'tempus/es.js' %}"></script>
+<link href="{% static 'tempus/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" type="text/css">
+{{ form.media }}
+{% endblock %}
+{% block body %}
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-5">
+                    {% block todo %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extra_js%}
+{% endblock %}

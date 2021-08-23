@@ -1,0 +1,277 @@
+/*definiendo variables de colores*/
+:root {
+    --Bl: #fff;
+    --BlAz:  	#abedd8;
+    --AzSc: #abedd8;
+    --AzC: #46cdcf;
+    --Az: #3d84a8;
+    --AzO:#48466d;
+    --Za: #4375db;
+    --Roj: #db5d43;
+    --Mrd: #db43c1;
+    --Amr: #c1db43;
+    --Verd: #43dba9;
+    --AzSo: #2b2a41;
+    
+}
+/*imagen de fondo del body*/
+/* body {
+    background-image: url('../img/bg.png') !important; 
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    height: 100%; 
+} */
+
+body {
+    color: var(--AzO);
+}
+/*fondo del contenido*/
+#content-wrapper {
+    background-image: url('../img/bg.png') !important;
+    /* background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover; */
+}
+/* sidebar*/
+.bg-gradient-primary {
+    background-color: var(--AzSo) !important;
+    background-image: linear-gradient(180deg, var(--AzO) 60%, var(--Az) 150%)
+}
+/* estilo del navbar */
+.topbar {
+    background-color: var(--AzC) !important;
+    height: 3.5rem !important;
+}
+.nav-link {
+    width: 100% !important;
+}
+/* color del footer */
+.sticky-footer {
+    padding: 1rem 0 !important;
+    background-color: var(--BlAz) !important;
+}
+
+/* estilo de las cartas */
+.card {
+    border: 1px solid var(--AzO);
+}
+.text-primary {
+    color: var(--Bl) !important;
+    /* transition: all .3s ease-out; */
+}
+.card-header {
+    border-bottom: 1px solid var(--AzO);
+    background: var(--AzO);
+  background: linear-gradient(90deg, var(--AzO) 0%, var(--Az) 50%, var(--AzO) 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all .2s ease-out;
+}
+.card:hover .card-header {
+    background-position: left bottom;
+}
+/* .card:hover .text-primary {
+    color: var(--Bl) !important;
+} */
+.border-left-info {
+    border-left: 0.25rem solid var(--AzC) !important;
+}
+.border-left-success {
+    border-left: 0.25rem solid var(--Verd) !important;
+}
+.border-left-warning{
+    border-left: 0.25rem solid var(--Amr) !important;
+}
+.text-info {
+    color: var(--AzC) !important;
+}
+.text-success{
+    color: var(--Verd) !important;
+}
+.text-warning {
+    color: var(--Amr) !important;
+}
+.card-noborder {
+    border: none;
+}
+/* Estilo de Tablas */
+.table {
+    color: var(--AzSo);
+}
+.table-bordered {
+    border: 1px solid var(--Az);
+}
+.table thead th {
+    border-bottom: 2px solid var(--Az);
+}
+.table tbody tr {
+    transition: all .2s ease-out;
+}
+.table tbody tr:hover {
+    background-color: var(--AzSc);
+    /* color: #fff !important; */
+}
+/* estilo botones */
+.btn-primary {
+    background-color: var(--AzO);
+    border-color: var(--AzO);
+}
+.btn-primary:hover {
+    background-color: var(--AzSo);
+    border-color: var(--Az) !important;
+    color: var(--Bl) !important;
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    background-color: var(--AzO);
+    border-color: var(--AzO);
+}
+.btn-pad {
+    margin-top: 33px;
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-secondary {
+    background: var(--AzSc);
+    color: var(--AzSo);
+    border: none;
+}
+.btn-secondary:hover {
+    background: var(--AzC);
+    color: var(--AzSo);
+}
+.fa-plus-circle {
+    font-size: 3rem ;
+    color: #004c4c;
+    margin-top: 33px;
+    transition: all .3s ease-out;
+}
+.fa-plus-circle:hover{
+    color: #008080;
+}
+.icon {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .fa-plus-circle {
+        font-size: 2.75rem !important;
+    }
+/* 
+  .sidebar {
+    width: 0;
+    overflow: hidden;
+}
+    .sidebar.toggled {
+        width: 6.5rem !important;
+        min-height: 100vh !important;
+    }*/
+  } 
+  @media (max-width: 350px) {
+    .fa-plus-circle {
+        margin-top: 27px !important;
+        font-size: 2.75rem !important;
+        margin-left: -20px !important;
+    }
+    .fa-plus-circle.kek {
+        margin-top: 57px !important;
+    }
+  }
+/* tabla   */
+.page-item.active .page-link {
+background-color: var(--Az) !important;
+border-color: var(--Az) !important;
+}
+/* alertas */
+.topbar .dropdown-list .dropdown-header{
+    background-color: var(--Az);
+    border-color: var(--Az);
+}
+.bg-primary{
+    background-color: var(--Az) !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--AzSo);
+}
+.badge-danger {
+    background-color: var(--Roj);
+}
+.btn-link {
+    color: var(--Bl) !important;
+} 
+.float-right {
+    margin-left: auto !important;
+    margin-top: -50px;
+}
+
+/* iconos top */
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link {
+    color: var(--AzSc);
+}
+.topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
+    color: var(--AzO);
+  }
+
+/*titulo de cada partado*/
+.text-header {
+    color: #fff !important;
+    text-shadow: 0 0 7px #000 !important;
+  }
+/* boton configuracion*/
+.btn-configuracion{
+    text-align: center;
+}
+
+/*cards del index*/
+
+.card-index-txt{
+    font-size: 1.05rem;
+    margin-bottom: 0 !important;
+    font-weight: 800 !important;
+}
+
+.card-index{
+    padding: 1rem;
+}
+.fa-index{
+    font-size: 3em;
+}
+
+.card-index-num{
+    font-size: 2rem;
+}
+.card-pad{
+    padding: 0 !important;
+}
+
+/* boton wsp */
+.btn-wsp{
+    background-color: var(--Verd);
+    border-color: var(--Verd);
+}
+.icon-wsp{
+    color: var(--Bl);
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.div-btn-masc-perfil{
+    margin: auto;
+}
+
+.btn-masc-perfil{
+    width: 85%;
+    margin: auto;
+}
+.bootstrap-datetimepicker-widget{
+    height: 270px !important;
+    overflow-y: scroll;
+}

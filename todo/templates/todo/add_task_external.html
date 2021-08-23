@@ -1,0 +1,46 @@
+{% extends "todo/todo_base.html" %}
+{% block page_heading %}{% endblock %}
+{% block title %}File Ticket{% endblock %}
+
+{% block todo %}
+
+  <h2>{{ task }}</h2>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <h3>Ticket de problema de archivo</h3>
+    <p>
+      ¿Tienes un problema de soporte? Use este formulario para informar la dificultad: nos pondremos en contacto con usted</p>
+
+    {% if form.errors %}
+      {% for error in form.errors %}
+        <ul class="errorlist">
+          <li>
+            <strong>El {{ error|escape }} campo es requerido.</strong>
+          </li>
+        </ul>
+      {% endfor %}
+    {% endif %}
+
+    <form action="" name="add_task" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_title" name="title">Tema</label>
+          <input type="text" class="form-control" id="id_title" name="title" required placeholder="El espacio no debe ir vacio."
+            value="{% if form.title.value %}{{ form.title.value }}{% endif %}">
+        </div>
+        <div class="form-group">
+          <label for="id_note">Description</label>
+          <textarea class="form-control" id="id_note" name="note" rows="5"
+            aria-describedby="inputNoteHelp">{% if form.note.value %}{{ form.note.value }}{% endif %}</textarea>
+          <small id="inputNoteHelp" class="form-text text-muted">
+            Describa el problema. Por favor incluya detalles esenciales.
+          </small>
+        </div>
+
+        <input type="hidden" id="id_priority" name="priority" value="50">
+        <p><input type="submit" class="btn btn-primary" name="add_task" value="Submit"></p>
+    </form>
+
+{% endblock %}

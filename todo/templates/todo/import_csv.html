@@ -1,0 +1,88 @@
+{% extends "todo/todo_base.html" %}
+{% load static %}
+
+{% block title %}Import CSV{% endblock %}
+
+{% block todo %}
+  <h2>
+    Importar CSV
+  </h2>
+
+  <p>
+    
+Importar tareas por lotes cargando un CSV con formato específico.
+Consulte la documentación para las reglas de formato.
+Los éxitos y fracasos serán reportados aquí.
+  </p>
+
+  {% if results %}
+    <div class="card mb-4">
+      <div class="card-header">
+        
+Resultados de la carga de CSV
+      </div>
+      <div class="card-body">
+
+        {% if results.summaries %}
+          <p>
+            <b>
+              Resumen:</b>
+          </p>
+          <ul>
+            {% for line in results.summaries %}
+              <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if results.upserts %}
+          <p>
+            <b>Upserts (tareas creadas o actualizadas):</b>
+          </p>
+          <ul>
+            {% for line in results.upserts %}
+              <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if results.errors %}
+          <p>
+            <b>Errores (tareas NO creadas o actualizadas):</b>
+          </p>
+          <ul>
+            {% for error_row in results.errors %}
+              {% for k, error_list in error_row.items  %}
+                <li>
+                  Fila CSV {{ k }}</li>
+                <ul>
+                  {% for err in error_list %}
+                    <li>{{ err }}</li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-header">
+      Subir tareas
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+          <input type="file" name="csvfile" accept="text/csv">
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Subir</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

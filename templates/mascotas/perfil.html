@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block titulo %}Mascotas{% endblock %}
+{% block extrahead %}
+
+<script src="{% static 'tempus/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'tempus/moment.min.js' %}"></script>
+<script src="{% static 'tempus/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+<script src="{% static 'tempus/es.js' %}"></script>
+<link href="{% static 'tempus/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" type="text/css">
+{{ form.media }}
+
+{% endblock %}
+
+{% block mascota-activo %}active{% endblock %}
+{% block adicional-header %}{{ item.nomb_mascota }}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Nombre: {{ item_mascota.nomb_mascota }} </h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Dueño de mascota: </strong> {{ item_mascota.propietario_mascota }}</p>
+                    <p><strong>Tipo de mascota: </strong> {{ item_mascota.tip_mascota }}</p>
+                    <p><strong>Género de mascota: </strong> {{ item_mascota.genero_mascota }}</p>
+                    {% if item_mascota.raza_mascota %}
+                    <p><strong>Raza de mascota: </strong> {{ item_mascota.raza_mascota }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Detalles Adicionales</h6>
+                </div>
+                <div class="card-body">
+                    {% if item_detalle %}
+                    {% for item in item_detalle %}
+                    <p><strong>Fecha de nacimiento: </strong>
+                        {{ item.fecha_nacimiento|default_if_none:"No especificado" }}
+                    </p>
+                    <p><strong>Estado actual: </strong> {{ item.estado }}</p>
+                    <p><strong>Detalles adicionales: </strong> {{ item.adicional|default_if_none:"No especificado" }}
+                    </p>
+
+                    <div style="text-align: center;">
+                        <a href="{% url 'mascotas:editar_detalle' item.id %}"
+                            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+
+                    <div class="btn-configuracion"><a href="#" data-toggle="modal" data-target="#anadir_detalle"
+                            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Añadir detalle</a></div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Imagen</h6>
+                </div>
+                <div class="card-body">
+                    {% if item_imagen %}
+                    {% else %}
+                    <a href="#" data-toggle="modal" data-target="#nuevaimagen"
+                        class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Agregar imagen</a>
+                    {% endif %}
+                    {% for item in item_imagen %}
+
+                    <img src="{% get_media_prefix %}{{ item.mascota_img }}" width="100%" />
+                    <div class="mt-2" style="text-align:center;">
+                        <a href="#" data-toggle="modal" data-target="#eliminar_imagen"
+                            class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">Eliminar imagen</a>
+                    </div>
+                    <div class="modal fade" id="eliminar_imagen" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">¿Seguro que deseas eliminar?</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Selecciona "Eliminar" para eliminar la imagen (Puede colocar
+                                    otra luego).</div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button"
+                                        data-dismiss="modal">Cancelar</button>
+                                    <a class="btn btn-danger"
+                                        href="{% url 'mascotas:eliminar_imagen' item.pk %}">Eliminar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+        <div class="col-md-9 d-flex align-items-center"><h6 class="m-0 font-weight-bold text-primary">Historial Clinico </h6></div>
+        <div class="col-md-3"><a href="#" class="btn btn-secondary shadow" data-toggle="modal" data-target="#nuevoregistro">Nuevo registro clínico</a></div>
+    </div>
+    </div>
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Fecha</th>
+                        <th>Detalles</th>
+                        <th>Editar</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item_registro %}
+                    <tr>
+                        <td>{{ item.pk }}</td>
+                        <td>{{ item.fecha_registro }}</td>
+                        <td class="col-8">
+                            <p><strong> Motivo:</strong> {{ item.motivo }}</p>
+                            <p><strong> Prediagnostico:</strong> {{ item.prediagnostico|default_if_none:"N/A" }}</p>
+                            <p><strong> Indicaciones:</strong> {{ item.indicaciones }}</p>
+                            <p><strong> Sistema afectado:</strong> {{ item.sistema_afectado|default_if_none:"N/A" }}</p>
+
+                        </td>
+                        <td>
+                            <div class="btn-configuracion"><a href="{% url 'mascotas:editar_registro' item.pk %}"
+                                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="anadir_detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva Marca</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="user" method="POST">
+                {% csrf_token %}
+                <div class="m-3">
+                    {{ form_det_masc|crispy }}</div>
+                <div class="row mb-2">
+                    <button type="submit" class="btn btn-primary btn-user col-md-4"
+                        style="margin: auto;">Guardar!!</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="modal fade" id="nuevaimagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva imagen</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="user" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="m-3">
+                    {{ form_imagen }}</div>
+                <div class="row mb-2">
+                    <button type="submit" class="btn btn-primary btn-user col-md-4"
+                        style="margin: auto;">Guardar!!</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="modal fade" id="nuevoregistro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva Marca</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="user" method="POST">
+                {% csrf_token %}
+                <div class="m-3">
+                    {{ form_reg|crispy }}</div>
+                <div class="row mb-2">
+                    <button type="submit" class="btn btn-primary btn-user col-md-4"
+                        style="margin: auto;">Guardar!!</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}

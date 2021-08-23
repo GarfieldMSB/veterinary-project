@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block titulo %}Usuarios{% endblock %}
+
+{% block usuario-activo %}active{% endblock %}
+
+{% block body %}
+
+este es el apartado de usuarios registrados
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Usarios propietarios de mascotas</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <!-- <th>Telefono</th> -->
+                        <th>Celular</th>
+                        <th>Dirección</th>
+                        <!-- <th>Configuración</th> -->
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items_usr %}
+                    <tr>
+                        <td>{{ item.pk }}</td>
+                        <!-- <td>{{ item.nomb_usr }}</td> -->
+                        <td><a href="{% url 'usuarios:perfil_usr' item.id %}">{{ item.nomb_usr }}</a></td>
+                        <td>{{ item.ap_usr }}</td>
+                        <td>{{ item.cel_usr }}</td>
+                        <td>{{ item.dir_usr }}</td>
+                        <!-- <td><div class="btn-configuracion"><a href="{% url 'usuarios:perfil_usr' item.id %}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Ver usuario</a></div></td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

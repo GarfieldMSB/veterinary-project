@@ -1,0 +1,136 @@
+{% extends "todo/todo_base.html" %}
+{% load static %}
+
+{% block title %}Listas por realizar: {{ task_list.name }}{% endblock %}
+
+{% block todo %}
+{% load i18n %}
+
+  {% if list_slug != "mine" %}
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>Ya existe tarea con la fecha indicada</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>Ya existe tarea con la fecha indicada</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+    <button class="btn btn-primary" id="AddTaskButton" type="button"
+      data-toggle="collapse" data-target="#AddEditTask">Añadir tarea</button>
+
+    {# Task edit / new task form #}
+    
+    <div id="AddEditTask" class="collapse">
+      
+      {% include 'todo/include/task_edit.html' %}
+    </div>
+    <hr />
+  {% endif %}
+
+  {% if tasks %}
+    {% if list_slug == "mine" %}
+      <h1>Tareas asignadas para mi(en todos los grupos)</h1>
+    {% else %}
+      <h1>{{ view_completed|yesno:"Tareas completadas, Tareas" }} en "{{ task_list.name }}"</h1>
+      <p><small><i>- 
+        Arrastrar filas para establecer prioridades.</i></small></p>
+    {% endif %}
+
+      <table class="table" id="tasktable" style="margin-top: 1.5rem;">
+        <tr class="nodrop" style="border-top: 2px solid var(--AzO); border-bottom: 2px solid var(--AzO);">
+          <th>Tareas</th>
+          <th>Crear</th>
+          <th>Debido a</th>
+          <th>Propietario</th>
+          <th>Asignado</th>
+          <th>Marca</th>
+        </tr>
+
+        {% for task in tasks %}
+          <tr id="{{ task.id }}">
+            <td>
+                <a href="{% url 'todo:task_detail' task.id %}">{{ task.title|truncatewords:10 }}</a>
+            </td>
+            <td>
+                {{ task.created_date|date:"d/m/Y" }}
+            </td>
+            <td>
+              <span {% if task.overdue_status %}class="overdue"{% endif %}>
+
+                {% language 'es' %}
+                {{ task.due_date|date:"d M" }} {{ task.due_date|time:"h:i a" }}
+                {% endlanguage %}
+              </span>
+            </td>
+            <td>
+              {{ task.created_by }}
+            </td>
+            <td>
+              {% if task.assigned_to %}{{ task.assigned_to }}{% else %}Todos{% endif %}
+            </td>
+            <td>
+              <form method="post" action="{% url "todo:task_toggle_done" task.id %}" role="form">
+                {% csrf_token %}
+                <button class="btn btn-info btn-sm" type="submit" name="toggle_done">
+                  {% if view_completed %}
+                    No hecho
+                  {% else %}
+                    Hecho
+                  {% endif %}
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      {% include 'todo/include/toggle_delete.html' %}
+
+  {% else %}
+    <h4>
+      Aún no hay tareas en esta lista (agrega una!)</h4>
+    {% include 'todo/include/toggle_delete.html' %}
+
+  {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'todo/js/jquery.tablednd_0_5.js' %}" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    function order_tasks(data) {
+      // The JQuery plugin tableDnD provides a serialize() function which provides the re-ordered
+      // data in a list. We pass that list as an object ("data") to a Django view
+      // to save new priorities on each task in the list.
+      $.post("{% url 'todo:reorder_tasks' %}", data, "json");
+      return false;
+    };
+
+    $(document).ready(function() {
+      // Initialise the task table for drag/drop re-ordering
+      $("#tasktable").tableDnD();
+
+      $('#tasktable').tableDnD({
+        onDrop: function(table, row) {
+          order_tasks($.tableDnD.serialize());
+        }
+      });
+
+    });
+
+    // When adding a task, change the text of the Add Task button
+    function handleClick()
+    {
+        console.log(this.innerHTML);
+        this.innerHTML = (this.innerHTML == 'Add Task' ? 'Cancel' : 'Añadir evento');
+    }
+    document.getElementById('AddTaskButton').onclick=handleClick;
+  </script>
+{% endblock extra_js %}

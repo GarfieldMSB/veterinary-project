@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}Nueva Mascota{% endblock %}
+
+{% block registrar-activo %}active{% endblock %}
+
+{% block body %}
+<!-- en desuso, apartado para crear nueva mascota independiente -->
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Nueva Mascota!</h1>
+                    </div>
+                    <form class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">{{ form.nomb_mascota|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.tip_mascota|as_crispy_field }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">{{ form.genero_mascota|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ form.raza_mascota|as_crispy_field }}</div>
+                            <div class="col-md-4">{{ form.propietario_mascota|as_crispy_field }}</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block">Registrar Mascota</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
