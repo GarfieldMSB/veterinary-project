@@ -32,6 +32,6 @@ py manage.py runserver
 #Primero tendrás que registrar tu IPV4 dentro de VeterinariaFIS>settings.py, en ALLOWED_HOSTS
 #Luego lo corres con
 
-py manage.py runserver 0.0.0.0:8000 
+py manage.py runserver 
 
 ```
