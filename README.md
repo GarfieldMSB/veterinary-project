@@ -27,11 +27,5 @@ py manage.py createsuperuser
 #Correr el server localmente
 py manage.py runserver 
 
-#Ahora puedes entrar al navegador colocar localhost y listo
-#Cómo alternativa puedes hacerlo público:
-#Primero tendrás que registrar tu IPV4 dentro de VeterinariaFIS>settings.py, en ALLOWED_HOSTS
-#Luego lo corres con
-
-py manage.py runserver 
 
 ```
